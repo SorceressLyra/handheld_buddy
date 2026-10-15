@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Handheld Buddy</string>
+    <string name="service_description">Listen for your controller shortcuts to adjust brightness and media volume across apps. Only button events are used. Screen content is not read or stored. Release Back without a feature key to go back. Hold Back and press a feature key to adjust at once.</string>
+</resources>

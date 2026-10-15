@@ -1,0 +1,23 @@
+# Gradle and generated output
+.gradle/
+.kotlin/
+**/build/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+
+# Local SDK and IDE settings
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+# Signing credentials
+*.jks
+*.keystore
+keystore.properties
+
+# Device captures and memory dumps
+captures/
+*.hprof

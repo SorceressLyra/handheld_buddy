@@ -1,0 +1,56 @@
+<resources>
+    <style name="Accent.Purple" parent="">
+        <item name="colorPrimary">#D0BCFF</item>
+        <item name="colorSecondary">#D0BCFF</item>
+        <item name="colorOnPrimary">#381E72</item>
+        <item name="colorOnSecondary">#381E72</item>
+        <item name="colorControlActivated">#D0BCFF</item>
+        <item name="colorPrimaryContainer">#381E72</item>
+        <item name="colorOnPrimaryContainer">#D0BCFF</item>
+    </style>
+    <style name="Accent.Blue" parent="">
+        <item name="colorPrimary">#B3C5FF</item>
+        <item name="colorSecondary">#B3C5FF</item>
+        <item name="colorOnPrimary">#002D6F</item>
+        <item name="colorOnSecondary">#002D6F</item>
+        <item name="colorControlActivated">#B3C5FF</item>
+        <item name="colorPrimaryContainer">#002D6F</item>
+        <item name="colorOnPrimaryContainer">#B3C5FF</item>
+    </style>
+    <style name="Accent.Teal" parent="">
+        <item name="colorPrimary">#80D5C9</item>
+        <item name="colorSecondary">#80D5C9</item>
+        <item name="colorOnPrimary">#003730</item>
+        <item name="colorOnSecondary">#003730</item>
+        <item name="colorControlActivated">#80D5C9</item>
+        <item name="colorPrimaryContainer">#003730</item>
+        <item name="colorOnPrimaryContainer">#80D5C9</item>
+    </style>
+    <style name="Accent.Green" parent="">
+        <item name="colorPrimary">#A8D5A2</item>
+        <item name="colorSecondary">#A8D5A2</item>
+        <item name="colorOnPrimary">#0B390C</item>
+        <item name="colorOnSecondary">#0B390C</item>
+        <item name="colorControlActivated">#A8D5A2</item>
+        <item name="colorPrimaryContainer">#0B390C</item>
+        <item name="colorOnPrimaryContainer">#A8D5A2</item>
+    </style>
+    <style name="Accent.Amber" parent="">
+        <item name="colorPrimary">#F6C85F</item>
+        <item name="colorSecondary">#F6C85F</item>
+        <item name="colorOnPrimary">#3F2E00</item>
+        <item name="colorOnSecondary">#3F2E00</item>
+        <item name="colorControlActivated">#F6C85F</item>
+        <item name="colorPrimaryContainer">#3F2E00</item>
+        <item name="colorOnPrimaryContainer">#F6C85F</item>
+    </style>
+    <style name="Accent.Rose" parent="">
+        <item name="colorPrimary">#F5B5CD</item>
+        <item name="colorSecondary">#F5B5CD</item>
+        <item name="colorOnPrimary">#5B1134</item>
+        <item name="colorOnSecondary">#5B1134</item>
+        <item name="colorControlActivated">#F5B5CD</item>
+        <item name="colorPrimaryContainer">#5B1134</item>
+        <item name="colorOnPrimaryContainer">#F5B5CD</item>
+    </style>
+</resources>
