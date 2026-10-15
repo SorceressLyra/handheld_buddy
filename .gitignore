@@ -21,3 +21,6 @@ keystore.properties
 # Device captures and memory dumps
 captures/
 *.hprof
+
+
+.vscode/*
