@@ -38,11 +38,17 @@ class BuddySettings(val prefs: SharedPreferences) {
     var compactOverlays: Boolean
         get() = prefs.getBoolean("overlay.compact", false)
         set(value) { prefs.edit().putBoolean("overlay.compact", value).apply() }
+    var showTime: Boolean
+        get() = prefs.getBoolean("overlay.show_time", false)
+        set(value) { prefs.edit().putBoolean("overlay.show_time", value).apply() }
+    var showBatteryPercentage: Boolean
+        get() = prefs.getBoolean("overlay.show_battery_percentage", false)
+        set(value) { prefs.edit().putBoolean("overlay.show_battery_percentage", value).apply() }
     var style: Int
         get() = if (prefs.getInt("overlay.style", 0) == 0) 0 else 2
         set(value) { prefs.edit().putInt("overlay.style", value).apply() }
     fun resetQuickControls() {
-        val keys = listOf("enabled", "global", "overlay.style", "overlay.compact", "brightness.step") +
+        val keys = listOf("enabled", "global", "overlay.style", "overlay.compact", "overlay.show_time", "overlay.show_battery_percentage", "brightness.step") +
             features.flatMap { feature ->
                 listOf("enabled", "override", "decrease", "increase").map { "${feature.control.id}.$it" }
             }

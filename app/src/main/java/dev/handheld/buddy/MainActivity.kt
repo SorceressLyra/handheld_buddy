@@ -215,11 +215,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             card(controls, "Reset") { box ->
-                body(box, "Restore the default overlay style and button bindings.")
+                body(box, "Restore the default overlay appearance and button bindings.")
                 button(box, "Reset Quick Controls") {
                     MaterialAlertDialogBuilder(this)
                         .setTitle("Reset Quick Controls?")
-                        .setMessage("Restore Back + L1/R1 for brightness, Back + L2/R2 for volume, and Retro segments. Hotkeys and both controls will be enabled. Android permissions stay unchanged.")
+                        .setMessage("Restore Back + L1/R1 for brightness, Back + L2/R2 for volume, and Retro segments. Hotkeys and both controls will be enabled; time and battery indicators will be hidden. Android permissions stay unchanged.")
                         .setNegativeButton("Cancel", null)
                         .setPositiveButton("Reset") { _, _ ->
                             settings.resetQuickControls()
@@ -237,13 +237,32 @@ class MainActivity : AppCompatActivity() {
                     isChecked = settings.compactOverlays
                     setOnCheckedChangeListener { _, checked -> settings.compactOverlays = checked; render() }
                 })
+                box.addView(MaterialSwitch(this).apply {
+                    tag = "show-overlay-time"
+                    text = "Show time"
+                    textSize = 14f
+                    minHeight = dp(48)
+                    isChecked = settings.showTime
+                    setOnCheckedChangeListener { _, checked -> settings.showTime = checked; render() }
+                })
+                box.addView(MaterialSwitch(this).apply {
+                    tag = "show-overlay-battery"
+                    text = "Show battery percentage"
+                    textSize = 14f
+                    minHeight = dp(48)
+                    isChecked = settings.showBatteryPercentage
+                    setOnCheckedChangeListener { _, checked -> settings.showBatteryPercentage = checked; render() }
+                })
                 val preview = ControlOverlay(this).apply {
                     percent = (Brightness.read(this@MainActivity) * 100f / 255).roundToInt()
                     compact = settings.compactOverlays
                     style = settings.style
                     accent = settings.accent.overlayColor
+                    configureIndicators(settings.showTime, settings.showBatteryPercentage)
                 }
-                box.addView(preview, LinearLayout.LayoutParams(dp(if (settings.compactOverlays) 200 else 260), dp(if (settings.compactOverlays) 30 else 52)).apply {
+                val indicatorCount = (if (settings.showTime) 1 else 0) + (if (settings.showBatteryPercentage) 1 else 0)
+                val previewWidth = (if (settings.compactOverlays) 200 else 260) * (1f + indicatorCount * 88f / 320f)
+                box.addView(preview, LinearLayout.LayoutParams(dp(previewWidth.roundToInt()), dp(if (settings.compactOverlays) 30 else 52)).apply {
                     gravity = Gravity.CENTER_HORIZONTAL; topMargin = dp(2); bottomMargin = dp(6)
                 })
                 button(box, "Style  ·  ${styles[styleValues.indexOf(settings.style)]}") {

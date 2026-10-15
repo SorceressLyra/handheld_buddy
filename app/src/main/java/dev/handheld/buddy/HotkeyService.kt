@@ -38,7 +38,10 @@ class HotkeyService : AccessibilityService(), SharedPreferences.OnSharedPreferen
                 Control.VOLUME -> Volume.adjust(this, result.delta)
                 null -> null
             }
-            if (percent != null && result.control != null) overlay.show(percent, settings.style, result.control, settings.accent.overlayColor, settings.compactOverlays)
+            if (percent != null && result.control != null) overlay.show(
+                percent, settings.style, result.control, settings.accent.overlayColor, settings.compactOverlays,
+                settings.showTime, settings.showBatteryPercentage,
+            )
             else if (event.eventTime - lastError > 3000) {
                 val message = if (result.control == Control.VOLUME) "Android does not allow media volume changes" else "Allow Handheld Buddy to change system settings"
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
