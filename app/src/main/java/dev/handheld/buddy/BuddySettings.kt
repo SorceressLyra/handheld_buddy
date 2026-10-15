@@ -10,13 +10,13 @@ class FeatureSettings(private val prefs: SharedPreferences, val control: Control
         get() = prefs.getBoolean("$prefix.enabled", true)
         set(value) { prefs.edit().putBoolean("$prefix.enabled", value).apply() }
     var override: Set<Int>?
-        get() = prefs.getStringSet("$prefix.override", null)?.mapNotNull { it.toIntOrNull() }?.filterNot(::isDpadKey)?.toSet()?.takeIf { it.isNotEmpty() }
+        get() = prefs.getStringSet("$prefix.override", null)?.mapNotNull { it.toIntOrNull() }?.filter(::isHotkeyKeyAllowed)?.toSet()?.takeIf { it.isNotEmpty() }
         set(value) { prefs.edit().putStringSet("$prefix.override", value?.map { it.toString() }?.toSet()).apply() }
     var decrease: Int
-        get() = prefs.getInt("$prefix.decrease", defaultDecrease).takeUnless(::isDpadKey) ?: defaultDecrease
+        get() = prefs.getInt("$prefix.decrease", defaultDecrease).takeIf(::isHotkeyKeyAllowed) ?: defaultDecrease
         set(value) { prefs.edit().putInt("$prefix.decrease", value).apply() }
     var increase: Int
-        get() = prefs.getInt("$prefix.increase", defaultIncrease).takeUnless(::isDpadKey) ?: defaultIncrease
+        get() = prefs.getInt("$prefix.increase", defaultIncrease).takeIf(::isHotkeyKeyAllowed) ?: defaultIncrease
         set(value) { prefs.edit().putInt("$prefix.increase", value).apply() }
     fun binding(global: Set<Int>) = KeyBinding(control, override ?: global, decrease, increase)
 }
@@ -33,7 +33,7 @@ class BuddySettings(val prefs: SharedPreferences) {
         get() = prefs.getBoolean("enabled", true)
         set(value) { prefs.edit().putBoolean("enabled", value).apply() }
     var global: Set<Int>
-        get() = prefs.getStringSet("global", setOf("4"))!!.mapNotNull { it.toIntOrNull() }.filterNot(::isDpadKey).toSet().ifEmpty { setOf(KeyEvent.KEYCODE_BACK) }
+        get() = prefs.getStringSet("global", setOf("4"))!!.mapNotNull { it.toIntOrNull() }.filter(::isHotkeyKeyAllowed).toSet().ifEmpty { setOf(KeyEvent.KEYCODE_BACK) }
         set(value) { prefs.edit().putStringSet("global", value.map { it.toString() }.toSet()).apply() }
     var compactOverlays: Boolean
         get() = prefs.getBoolean("overlay.compact", false)
@@ -61,3 +61,5 @@ fun keyName(key: Int): String = when (key) {
     else -> KeyEvent.keyCodeToString(key).removePrefix("KEYCODE_").removePrefix("BUTTON_").replace('_', ' ')
 }
 fun comboName(keys: Set<Int>) = keys.sorted().joinToString(" + ", transform = ::keyName)
+
+fun isHotkeyKeyAllowed(key: Int) = !isDpadKey(key) && key != KeyEvent.KEYCODE_HOME

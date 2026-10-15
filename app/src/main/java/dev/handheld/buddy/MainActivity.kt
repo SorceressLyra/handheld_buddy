@@ -446,7 +446,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun chooseKeys(current: Set<Int>, multiple: Boolean, save: (Set<Int>) -> Unit) {
         val options = (listOf(
-            KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_HOME,
+            KeyEvent.KEYCODE_BACK,
             KeyEvent.KEYCODE_BUTTON_SELECT, KeyEvent.KEYCODE_BUTTON_START, KeyEvent.KEYCODE_BUTTON_MODE,
             KeyEvent.KEYCODE_BUTTON_L1, KeyEvent.KEYCODE_BUTTON_R1,
             KeyEvent.KEYCODE_BUTTON_L2, KeyEvent.KEYCODE_BUTTON_R2,
@@ -454,8 +454,8 @@ class MainActivity : AppCompatActivity() {
             KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_B,
             KeyEvent.KEYCODE_BUTTON_X, KeyEvent.KEYCODE_BUTTON_Y,
             KeyEvent.KEYCODE_VOLUME_UP, KeyEvent.KEYCODE_VOLUME_DOWN,
-        ) + current).distinct()
-        val selected = current.toMutableSet()
+        ) + current.filter(::isHotkeyKeyAllowed)).distinct()
+        val selected = current.filter(::isHotkeyKeyAllowed).toMutableSet()
         val names = options.map(::keyName).toTypedArray()
         val builder = MaterialAlertDialogBuilder(this)
             .setTitle(if (multiple) "Choose hotkey buttons" else "Choose trigger button")
@@ -494,6 +494,9 @@ class MainActivity : AppCompatActivity() {
         val listener: (KeyEvent) -> Boolean = { event ->
             if (isDpadKey(event.keyCode)) {
                 detected.text = "D-pad is for navigation. Choose another button."
+                true
+            } else if (event.keyCode == KeyEvent.KEYCODE_HOME) {
+                detected.text = "Home cannot be used for hotkeys. Choose another button."
                 true
             } else if (event.keyCode != KeyEvent.KEYCODE_UNKNOWN && (event.action == KeyEvent.ACTION_DOWN || event.action == KeyEvent.ACTION_UP)) {
                 recorder.event(event.keyCode, event.action == KeyEvent.ACTION_DOWN)

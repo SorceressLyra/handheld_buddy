@@ -10,7 +10,7 @@ fun isDpadKey(key: Int) = key in 19..23 || key in 268..271
 
 fun validBindings(bindings: List<KeyBinding>): Boolean {
     val modifiers = bindings.flatMap { it.modifiers }.toSet()
-    if (modifiers.any(::isDpadKey) || bindings.any { isDpadKey(it.decrease) || isDpadKey(it.increase) }) return false
+    if (modifiers.any { !isHotkeyKeyAllowed(it) } || bindings.any { !isHotkeyKeyAllowed(it.decrease) || !isHotkeyKeyAllowed(it.increase) }) return false
     if (bindings.any { it.modifiers.isEmpty() || it.decrease == it.increase || it.decrease in modifiers || it.increase in modifiers }) return false
     return bindings.indices.all { i ->
         bindings.drop(i + 1).none { other ->
