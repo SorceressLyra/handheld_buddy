@@ -6,7 +6,7 @@ on:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -15,6 +15,13 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+
+      - name: Restore Android signing key
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$ANDROID_KEYSTORE_BASE64" || { echo "ANDROID_KEYSTORE_BASE64 secret is missing"; exit 1; }
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/handheld-buddy-release.jks"
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -26,13 +33,16 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build release APK
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ runner.temp }}/handheld-buddy-release.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           chmod +x ./gradlew
           ./gradlew assembleRelease
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - name: Attach APK to GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: handheld-buddy-${{ github.ref_name }}
-          path: "**/build/outputs/apk/release/*.apk"
-          if-no-files-found: error
+          files: "**/build/outputs/apk/release/*.apk"
